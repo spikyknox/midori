@@ -1,9 +1,11 @@
+#include <dummy.h>
+
 #include "leds.h" //include the declaration for this class
 
 Leds::Leds(){
   
     
-    pinMode(NEO_PIN, OUTPUT);
+    //pinMode(NEO_PIN, OUTPUT);
     
     // When we setup the NeoPixel library, we tell it how many pixels, and which pin to use to send signals.
     // Note that for older NeoPixel strips you might need to change the third parameter--see the strandtest
@@ -16,6 +18,9 @@ Leds::Leds(){
 //<<destructor>>
 Leds::~Leds(){/*nothing to destruct*/}
 
+void Leds::led1(int RValue,int GValue,int BValue){
+  pixels.setPixelColor(0, pixels.Color(RValue ,GValue,BValue)); 
+}
 
 //turn the LED on
 void Leds::showRedBarValue(float nValue){

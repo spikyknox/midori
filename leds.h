@@ -4,19 +4,19 @@
 #include "midori.h"
 
 // Which pin on the Arduino is connected to the NeoPixels?
-#define NEO_PIN            22
+#define NEO_PIN  A4
 
 // How many NeoPixels are attached to the Arduino?
-#define NUMPIXELS      4
+#define NUMPIXELS      1
 
-#define LED_MAX_POWER 75
+#define LED_MAX_POWER 40
  
 class Leds {
 public:
            
         Leds();
         ~Leds();
-        
+        void led1(int RValue,int GValue,int BValue);
         void showRedBarValue(float nValue);
         void showBlueBarValue(float nValue);
         void showGreenBarValue(float nValue);
