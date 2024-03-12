@@ -18,11 +18,12 @@
 #include "command.h"
 #include "sensors.h"
 
-#define WHITE_LINE_THRESHOLD 3000
+#define WHITE_LINE_THRESHOLD 1500
 #define DT 5
 
 #define STOP_MODE  0
 #define AUTO_MODE  1
+#define ONE_IN_PUNCH  2
 
 #define LEFT_MOTOR_CANID 106
 #define RIGHT_MOTOR_CANID 105
