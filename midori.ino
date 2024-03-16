@@ -40,6 +40,10 @@ bool isCooldown = false; // Start cooldown
 unsigned long cooldownTime = 0;
 unsigned long punchTime = 0;
 
+//Seek vars
+unsigned long waitingTime = 0;
+bool isSeeking = false;
+
 void setup() {
   //VESC INIT
   Serial0.begin(115200);
@@ -82,7 +86,7 @@ void setup() {
     digitalWrite(LED_RED, HIGH);
     digitalWrite(LED_BLUE, LOW);
     startDelay += 10;
-  } while (startDelay < 0);
+  } while (startDelay < 2990);
 
   mainMode = AUTO_MODE;
 }
@@ -95,7 +99,12 @@ void loop() {
   wlState = 0;
 
   if (!digitalRead(IR_1)) mainMode = STOP_MODE;
-  else if (mainMode != STOP_MODE) mainMode = AUTO_MODE;
+  else if (mainMode != STOP_MODE){
+    //mainMode = AUTO_MODE;
+    mainMode = ONE_IN_PUNCH;
+    //mainMode = ONE_IN_PUNCH_SEEK;
+  }
+  
 
   switch (mainMode) {
       // --------------------------------------- Automatic Mode ----------------------------------------//
@@ -106,16 +115,11 @@ void loop() {
           commandCtrl.getWLBehavior(wlState, maintainValue, leftMotorRPM, rightMotorRPM);
        }
        else {
-         commandCtrl.getSearchBehavior(sensorsCtrl.getDistanceState(), leftMotorRPM, rightMotorRPM);
-         leftMotorRPM = 9000;
-         rightMotorRPM = 90000;
-
+         commandCtrl.getSearchBehavior(sensorsCtrl.getDistanceState(),maintainValue, leftMotorRPM, rightMotorRPM);
        }
       break;
     // --------------------------------------- Automatic Mode ----------------------------------------//
     case ONE_IN_PUNCH:
-
-      
 
       wlState = sensorsCtrl.getWLState();
       if (wlState) {
@@ -124,7 +128,7 @@ void loop() {
        else {
 
         currentZone = sensorsCtrl.getDistanceState();
-        commandCtrl.getSearchBehaviorPunch(currentZone, leftMotorRPM, rightMotorRPM);
+        commandCtrl.getSearchBehaviorPunch(currentZone, maintainValue, leftMotorRPM, rightMotorRPM);
 
         // Check if in cooldown and if cooldown is over
         if (isCooldown && millis() - cooldownTime >= 3000) { // 3 seconds cooldown
@@ -138,7 +142,7 @@ void loop() {
         }
 
         // Check if punch duration has exceeded 1 second
-        if (isPunching && millis() - punchTime >= 150) {
+        if (isPunching && millis() - punchTime >= 160) {
             isPunching = false; // Stop punch
             isCooldown = true; // Start cooldown
             cooldownTime = millis(); // Update cooldown start time
@@ -146,39 +150,63 @@ void loop() {
 
         // If in cooldown after punching, execute Z_FRONT behavior
         if (currentZone == Z_NEAR && isCooldown and !isPunching) {
-            commandCtrl.getSearchBehaviorPunch(Z_FRONT, leftMotorRPM, rightMotorRPM);
+            commandCtrl.getSearchBehaviorPunch(Z_FRONT, maintainValue, leftMotorRPM, rightMotorRPM);
         }
 
       }
-      //   if (currentZone != Z_UNKNOWN && currentZone != Z_FRONT ){
-      //     // Tracking mode
-      //     searchDelay = 0;
-      //   }
-      //  else {
-         
-      //    searchDelay += DT;
-      //  }
-       
-
-      //  // Search delay trigger we move foward
-      //  if( searchDelay > 3000 )
-      //  {
-
-      //   int timing = 0;
-      //   int fowardTime = 500/5;     
-      //   do 
-      //   {         
-      //     leftMotorRPM = 1500;
-      //     rightMotorRPM = 1500;
-      //     VESCUART.setRPM(leftMotorRPM, LEFT_MOTOR_CANID);
-      //     VESCUART.setRPM(rightMotorRPM, RIGHT_MOTOR_CANID);
-      //     delay(DT);   
-      //     timing ++; 
-      //   // For X time we got foward until we track or white line.
-      //   }while(timing < fowardTime && sensorsCtrl.getDistanceState() == Z_UNKNOWN && sensorsCtrl.getWLState() == NO_WL);
-      //   searchDelay = 0;
-      //  } 
       break;
+
+    case ONE_IN_PUNCH_SEEK:
+
+      wlState = sensorsCtrl.getWLState();
+      if (wlState) {
+          commandCtrl.getWLBehavior(wlState, maintainValue, leftMotorRPM, rightMotorRPM);
+       }
+       else {
+
+        currentZone = sensorsCtrl.getDistanceState();
+        //commandCtrl.getSearchBehaviorSeek(currentZone, maintainValue, leftMotorRPM, rightMotorRPM);
+
+        // // Check if in cooldown and if cooldown is over
+        // if (isCooldown && millis() - cooldownTime >= 3000) { // 3 seconds cooldown
+        //   isCooldown = false;
+        // }
+         
+        // // Handle Z_NEAR and activate punching
+        // if (currentZone == Z_NEAR && !isCooldown && !isPunching) {
+        //     punchTime = millis();
+        //     isPunching = true; // Start punch
+        // }
+      
+        // // Check if punch duration has exceeded 1 second
+        // if (isPunching && millis() - punchTime >= 400) {
+        //     isPunching = false; // Stop punch
+        //     isCooldown = true; // Start cooldown
+        //     cooldownTime = millis(); // Update cooldown start time
+        // }
+      
+        // // If in cooldown after punching, execute Z_FRONT behavior
+        // if (currentZone == Z_NEAR && isCooldown and !isPunching) {
+        //     commandCtrl.getSearchBehaviorPunch(Z_FRONT, leftMotorRPM, rightMotorRPM);
+        // }
+
+        if (currentZone == Z_UNKNOWN){
+         if (isSeeking == false){
+          waitingTime = millis();
+          isSeeking = true;
+         }
+        }else{
+          isSeeking = false;
+        }
+
+        if((millis() - waitingTime > 2000) && (millis() - waitingTime < 4000) && isSeeking){
+          leftMotorRPM = 3000;
+          rightMotorRPM = 3000;
+        }
+      }
+
+      break;
+
       // ----------------------------------------- Stop Mode ---------------------------------------------//
     case STOP_MODE:
 

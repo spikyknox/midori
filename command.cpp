@@ -9,7 +9,75 @@ Command::~Command(){/*nothing to destruct*/}
 
 //turn the LED on
 
-void Command::getSearchBehaviorPunch(unsigned char nZone, int &leftMotorPower,int &rightMotorPower){
+void Command::getSearchBehaviorPunch(unsigned char nZone,unsigned int &maintainValue, int &leftMotorPower,int &rightMotorPower){
+
+    maintainValue = 0;
+
+    switch (nZone) {
+
+    case Z_UNKNOWN:
+                      //Turn Hard Left
+                      leftMotorPower   = 4000; 
+                      rightMotorPower  = 4000;
+      break;
+     
+    case Z_SIDE_LEFT:
+                      //Turn Hard Left
+                      leftMotorPower   = -5000;//-30;
+                      rightMotorPower  = 5000;// 30;
+                      maintainValue = 40;
+      break;
+    case Z_FRONT:
+                      //Full Foward
+                      leftMotorPower   = 6500;
+                      rightMotorPower  = 6500;
+      break;
+
+    case Z_FRONT_LEFT:
+
+                      //Turn Hard Left
+                      leftMotorPower   = 0;
+                      rightMotorPower  = 5000;//25;
+
+      break;
+
+    case Z_FRONT_RIGHT:
+
+                      //Turn Hard Left
+                      leftMotorPower   = 5000;//25;
+                      rightMotorPower  = 0;
+      break;
+
+    case Z_SIDE_RIGHT:
+                      //Turn Hard Right
+                      leftMotorPower   =  5000;//30;
+                      rightMotorPower  =  -5000;//-30;
+                      maintainValue = 40;
+      break;
+
+     case Z_NEAR_LEFT:
+                      leftMotorPower   = 0;//25;
+                      rightMotorPower  = 5000;
+      break;
+      
+     case Z_NEAR_RIGHT:
+                      leftMotorPower   = 5000;
+                      rightMotorPower  = 0;//25;
+      break;
+
+    case Z_NEAR:
+                      leftMotorPower   = 18000;
+                      rightMotorPower  = 18000;
+      break;
+      
+    default: 
+                      leftMotorPower   = 0;
+                      rightMotorPower  = 0;
+    break;
+  }
+}
+
+void Command::getSearchBehaviorSeek(unsigned char nZone,unsigned int &maintainValue, int &leftMotorPower,int &rightMotorPower){
 
 
     switch (nZone) {
@@ -22,8 +90,9 @@ void Command::getSearchBehaviorPunch(unsigned char nZone, int &leftMotorPower,in
      
     case Z_SIDE_LEFT:
                       //Turn Hard Left
-                      leftMotorPower   = -4000;//-30;
-                      rightMotorPower  = 4000;// 30;
+                      leftMotorPower   = -5000;//-30;
+                      rightMotorPower  = 5000;// 30;
+                      maintainValue = 40;
       break;
     case Z_FRONT:
                       //Full Foward
@@ -38,7 +107,6 @@ void Command::getSearchBehaviorPunch(unsigned char nZone, int &leftMotorPower,in
                       rightMotorPower  = 4000;//25;
       break;
 
-
     case Z_FRONT_RIGHT:
 
                       //Turn Hard Left
@@ -48,8 +116,9 @@ void Command::getSearchBehaviorPunch(unsigned char nZone, int &leftMotorPower,in
 
     case Z_SIDE_RIGHT:
                       //Turn Hard Right
-                      leftMotorPower   =  4000;//30;
-                      rightMotorPower  =  -4000;//-30;
+                      leftMotorPower   =  5000;//30;
+                      rightMotorPower  =  -5000;//-30;
+                      maintainValue = 40;
       break;
 
      case Z_NEAR_LEFT:
@@ -63,11 +132,8 @@ void Command::getSearchBehaviorPunch(unsigned char nZone, int &leftMotorPower,in
       break;
 
     case Z_NEAR:
-                      //leftMotorPower   = 50;
-                      //rightMotorPower  = 50;
-
-                      leftMotorPower   = 18000;
-                      rightMotorPower  = 18000;
+                      leftMotorPower   = 3000;
+                      rightMotorPower  = 3000;
       break;
       
     default: 
@@ -78,25 +144,26 @@ void Command::getSearchBehaviorPunch(unsigned char nZone, int &leftMotorPower,in
 }
 
 
-void Command::getSearchBehavior(unsigned char nZone, int &leftMotorPower,int &rightMotorPower){
+void Command::getSearchBehavior(unsigned char nZone,unsigned int &maintainValue, int &leftMotorPower,int &rightMotorPower){
 
     switch (nZone) {
 
     case Z_UNKNOWN:
                       //Foward
-                      leftMotorPower   = 0; 
-                      rightMotorPower  = 0;
+                      leftMotorPower   = 6000; 
+                      rightMotorPower  = 6000;
       break;
       
     case Z_SIDE_LEFT:
                       //Turn Hard Left
                       leftMotorPower   = -5000;
                       rightMotorPower  =  5000;
+                      maintainValue = 40;
       break;
     case Z_FRONT:
                       //Full Foward
-                      leftMotorPower   = 0; //2000
-                      rightMotorPower  = 0; //2000
+                      leftMotorPower   = 8000; //2000
+                      rightMotorPower  = 8000; //2000
       break;
 
     case Z_FRONT_LEFT:
@@ -117,6 +184,7 @@ void Command::getSearchBehavior(unsigned char nZone, int &leftMotorPower,int &ri
                       //Turn Hard Right
                       leftMotorPower   =  5000;
                       rightMotorPower  =  -5000;
+                      maintainValue = 40;
       break;
 
      case Z_NEAR_LEFT:
@@ -147,23 +215,23 @@ void Command::getWLBehavior(unsigned char wlState,unsigned int &maintainValue, i
     switch (wlState) {
     case LEFT_WL:
                       //Turn Hard Left
-                      leftMotorPower   =  4500; //
-                      rightMotorPower  = -4500;  // -6000 is working
-                      maintainValue    =  20; // * DT
+                      leftMotorPower   =  5000; //
+                      rightMotorPower  = -5000;  // -6000 is working
+                      maintainValue    =  30; //  * 20 at 5 DT
                       
       break;
     case RIGHT_WL:
                       //Full Foward
-                      leftMotorPower   = -4500;
-                      rightMotorPower  = 4500;
-                      maintainValue    =  20;
+                      leftMotorPower   = -5000;
+                      rightMotorPower  = 5000;
+                      maintainValue    =  30; // * 20 at 5 DT
       break;
 
     case BOTH_WL:
                       //Full Foward
-                      leftMotorPower   = -7000;
-                      rightMotorPower  = -7000;
-                      maintainValue    =  60;
+                      leftMotorPower   = -5000;
+                      rightMotorPower  = -6000;
+                      maintainValue    =  100; // * 20 at 5 DT
       break;
 
     default: 
@@ -183,21 +251,21 @@ void Command::getWLBehaviorOneWheel(unsigned char wlState,unsigned int &maintain
                       //Turn Hard Left
                       leftMotorPower   =  0; //
                       rightMotorPower  = -6000;  // -6000 is working
-                      maintainValue    =  30; // * DT
+                      maintainValue    =  150; // * 30 at 5 DT
                       
       break;
     case RIGHT_WL:
                       //Full Foward
                       leftMotorPower   = -6000;
                       rightMotorPower  = 0;
-                      maintainValue    =  30;
+                      maintainValue    =  150;    //30 at 5 DT
       break;
 
     case BOTH_WL:
                       //Full Foward
                       leftMotorPower   = -7000;
                       rightMotorPower  = -7000;
-                      maintainValue    =  60;
+                      maintainValue    =  150;  //60 at 5 DT
       break;
 
     default: 
