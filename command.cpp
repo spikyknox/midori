@@ -96,8 +96,8 @@ void Command::getSearchBehaviorSeek(unsigned char nZone,unsigned int &maintainVa
       break;
     case Z_FRONT:
                       //Full Foward
-                      leftMotorPower   = 0;
-                      rightMotorPower  = 0;
+                      leftMotorPower   = 4000;
+                      rightMotorPower  = 4000;
       break;
 
     case Z_FRONT_LEFT:
@@ -132,8 +132,8 @@ void Command::getSearchBehaviorSeek(unsigned char nZone,unsigned int &maintainVa
       break;
 
     case Z_NEAR:
-                      leftMotorPower   = 3000;
-                      rightMotorPower  = 3000;
+                      leftMotorPower   = 8000;
+                      rightMotorPower  = 8000;
       break;
       
     default: 

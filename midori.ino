@@ -63,7 +63,7 @@ void setup() {
     //digitalWrite(LED_RED, LOW);
     //digitalWrite(LED_BLUE, HIGH);
     //NeoPixel.showRedBarValue(100);
-     if( analogRead(WL_RIGHT_1) < WHITE_LINE_THRESHOLD)
+     if( analogRead(WL_RIGHT_1) < WHITE_LINE_THRESHOLD || analogRead(WL_LEFT_1) < WHITE_LINE_THRESHOLD)
      {  
        digitalWrite(LED_RED, HIGH);
    
@@ -165,7 +165,7 @@ void loop() {
        else {
 
         currentZone = sensorsCtrl.getDistanceState();
-        //commandCtrl.getSearchBehaviorSeek(currentZone, maintainValue, leftMotorRPM, rightMotorRPM);
+        commandCtrl.getSearchBehaviorSeek(currentZone, maintainValue, leftMotorRPM, rightMotorRPM);
 
         // // Check if in cooldown and if cooldown is over
         // if (isCooldown && millis() - cooldownTime >= 3000) { // 3 seconds cooldown
@@ -199,10 +199,16 @@ void loop() {
           isSeeking = false;
         }
 
-        if((millis() - waitingTime > 2000) && (millis() - waitingTime < 4000) && isSeeking){
+        if((millis() - waitingTime > 3000) && isSeeking){
           leftMotorRPM = 3000;
           rightMotorRPM = 3000;
+          // Foward done stop seeking
+          if((millis() - waitingTime > 4000) && isSeeking){
+            isSeeking = false;
         }
+        }
+
+
       }
 
       break;
