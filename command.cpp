@@ -17,8 +17,8 @@ void Command::getSearchBehaviorPunch(unsigned char nZone,unsigned int &maintainV
 
     case Z_UNKNOWN:
                       //Turn Hard Left
-                      leftMotorPower   = 4000; 
-                      rightMotorPower  = 4000;
+                      leftMotorPower   = 5500; 
+                      rightMotorPower  = 5500;
       break;
      
     case Z_SIDE_LEFT:
@@ -66,8 +66,8 @@ void Command::getSearchBehaviorPunch(unsigned char nZone,unsigned int &maintainV
       break;
 
     case Z_NEAR:
-                      leftMotorPower   = 18000;
-                      rightMotorPower  = 18000;
+                      leftMotorPower   = 30000;
+                      rightMotorPower  = 30000;
       break;
       
     default: 

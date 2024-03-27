@@ -86,7 +86,7 @@ void setup() {
     digitalWrite(LED_RED, HIGH);
     digitalWrite(LED_BLUE, LOW);
     startDelay += 10;
-  } while (startDelay < 2990);
+  } while (startDelay < 4990);
 
   mainMode = AUTO_MODE;
 }
@@ -142,7 +142,7 @@ void loop() {
         }
 
         // Check if punch duration has exceeded 1 second
-        if (isPunching && millis() - punchTime >= 160) {
+        if (isPunching && millis() - punchTime >= 185) {
             isPunching = false; // Stop punch
             isCooldown = true; // Start cooldown
             cooldownTime = millis(); // Update cooldown start time
