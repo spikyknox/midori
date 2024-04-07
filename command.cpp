@@ -170,7 +170,7 @@ void Command::getSearchBehavior(unsigned char nZone,unsigned int &maintainValue,
 
                       //Turn Hard Left
                       leftMotorPower   = 0;
-                      rightMotorPower  = 4000;//25;
+                      rightMotorPower  = 8000;//25;
       break;
 
     case Z_FRONT_RIGHT:
