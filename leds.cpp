@@ -1,5 +1,3 @@
-#include <SPI.h>
-
 #include <dummy.h>
 
 #include "leds.h" //include the declaration for this class
