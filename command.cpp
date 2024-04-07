@@ -84,20 +84,20 @@ void Command::getSearchBehaviorSeek(unsigned char nZone,unsigned int &maintainVa
 
     case Z_UNKNOWN:
                       //Turn Hard Left
-                      leftMotorPower   = 0; 
-                      rightMotorPower  = 0;
+                      leftMotorPower   = 7200; 
+                      rightMotorPower  = 7200;
       break;
      
     case Z_SIDE_LEFT:
                       //Turn Hard Left
-                      leftMotorPower   = -5000;//-30;
-                      rightMotorPower  = 5000;// 30;
-                      maintainValue = 40;
+                      leftMotorPower   = -8000;//-30;
+                      rightMotorPower  = 8000;// 30;
+                      maintainValue = 32;
       break;
     case Z_FRONT:
                       //Full Foward
-                      leftMotorPower   = 4000;
-                      rightMotorPower  = 4000;
+                      leftMotorPower   = 16000;
+                      rightMotorPower  = 16000;
       break;
 
     case Z_FRONT_LEFT:
@@ -110,30 +110,30 @@ void Command::getSearchBehaviorSeek(unsigned char nZone,unsigned int &maintainVa
     case Z_FRONT_RIGHT:
 
                       //Turn Hard Left
-                      leftMotorPower   = 4000;//25;
+                      leftMotorPower   = 8000;//25;
                       rightMotorPower  = 0;
       break;
 
     case Z_SIDE_RIGHT:
                       //Turn Hard Right
-                      leftMotorPower   =  5000;//30;
-                      rightMotorPower  =  -5000;//-30;
-                      maintainValue = 40;
+                      leftMotorPower   =  7000;//30;
+                      rightMotorPower  =  -7000;//-30;
+                      maintainValue = 32;
       break;
 
      case Z_NEAR_LEFT:
                       leftMotorPower   = 0;//25;
-                      rightMotorPower  = 4000;
+                      rightMotorPower  = 8000;
       break;
       
      case Z_NEAR_RIGHT:
-                      leftMotorPower   = 4000;
+                      leftMotorPower   = 8000;
                       rightMotorPower  = 0;//25;
       break;
 
     case Z_NEAR:
-                      leftMotorPower   = 8000;
-                      rightMotorPower  = 8000;
+                      leftMotorPower   = 40000;
+                      rightMotorPower  = 40000;
       break;
       
     default: 

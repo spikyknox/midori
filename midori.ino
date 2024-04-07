@@ -100,8 +100,8 @@ void loop() {
 
   if (!digitalRead(IR_1)) mainMode = STOP_MODE;
   else if (mainMode != STOP_MODE){
-    //mainMode = AUTO_MODE;
-    mainMode = ONE_IN_PUNCH;
+    mainMode = AUTO_MODE;
+    //mainMode = ONE_IN_PUNCH;
     //mainMode = ONE_IN_PUNCH_SEEK;
   }
   
